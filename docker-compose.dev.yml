@@ -1,0 +1,12 @@
+version: "3"
+services:
+  bitcorner_dev_frontend:
+    container_name: bitcorner_dev_frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: npm start
+    volumes:
+      - ./:/usr/src/bitcorner-frontend
+    ports:
+      - "3033:3033"
