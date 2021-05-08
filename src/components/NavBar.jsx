@@ -39,7 +39,7 @@ class NavBar extends Component {
       NavElems = (
         <NavDropdown
           title={
-            <span className="text-white">{this.props.currentUser.name}</span>
+            <span className="text-dark">{this.props.currentUser.name}</span>
           }
           className="text-white m-2"
         >

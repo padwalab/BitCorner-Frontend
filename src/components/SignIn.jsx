@@ -33,7 +33,7 @@ class Signin extends Component {
     const { success, warning, ...payload } = this.state;
     e.preventDefault();
     axios
-      .post(V1APIS.SIGN_IN, payload) //done
+      .post(V1APIS.SIGN_IN_API, payload) //done
       .then((res) => {
         console.log("repsonse data: ", res.data);
         if (res.status === 201) {

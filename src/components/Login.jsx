@@ -1,7 +1,9 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Alert, Button, Container, Form } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
+import * as V1APIS from "../apis/v1";
 import { logInUser } from "../redux/actions/action-helper";
 
 class Login extends Component {
@@ -20,20 +22,18 @@ class Login extends Component {
   };
 
   handleLogin = (e) => {
+    const { warning, ...loginData } = this.state;
     e.preventDefault();
-    // axios
-    //   .post("http://localhost:8000/users/login", { ...this.state }) //done
-    //   .then((res) => {
-    //     console.log("repsonse data: ", res.data);
-    //     if (res.status === 200) {
-    //       this.props.logInUser(res.data);
-    //     }
-    //   })
-    //   .catch((error) => this.setState({ warning: true }));
+    axios
+      .post(V1APIS.LOG_IN_API, loginData) //done
+      .then((res) => {
+        console.log("repsonse data: ", res.data);
+        if (res.status === 200) {
+          this.props.logInUser(res.data);
+        }
+      })
+      .catch((error) => this.setState({ warning: true }));
     console.log(this.state);
-    if (this.state.email === "a@g.com" && this.state.password === "a") {
-      this.props.logInUser(this.state);
-    }
     // this.setState({ email: "", password: "", warning: false });
   };
   render() {
