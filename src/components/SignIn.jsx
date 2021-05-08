@@ -4,17 +4,24 @@ import { connect } from "react-redux";
 import { signInUser } from "../redux/actions/action-helper";
 import axios from "axios";
 import { Redirect } from "react-router";
+import * as V1APIS from "../apis/v1";
 class Signin extends Component {
   state = {
     name: "",
     email: "",
     password: "",
+    nickName: "",
     warning: false,
     success: false,
   };
   handleName = (name) => {
     this.setState({ name });
   };
+
+  handleNickName = (nickName) => {
+    this.setState({ nickName });
+  };
+
   handleEmail = (email) => {
     this.setState({ email });
   };
@@ -23,20 +30,19 @@ class Signin extends Component {
   };
 
   handleSignInUser = (e) => {
+    const { success, warning, ...payload } = this.state;
     e.preventDefault();
-    // axios
-    //   .post("http://localhost:8000/users/signin", { ...this.state }) //done
-    //   .then((res) => {
-    //     console.log("repsonse data: ", res.data);
-    //     if (res.status === 200) {
-    //       this.props.signInUser(res.data);
-    //       this.setState({ success: true });
-    //       <Redirect to="/home" />;
-    //     }
-    //   })
-    //   .catch((error) => this.setState({ warning: true }));
+    axios
+      .post(V1APIS.SIGN_IN, payload) //done
+      .then((res) => {
+        console.log("repsonse data: ", res.data);
+        if (res.status === 201) {
+          this.setState({ success: true, warning: false });
+          <Redirect to="/home" />;
+        }
+      })
+      .catch((error) => this.setState({ success: false, warning: true }));
     console.log(this.state);
-    // this.setState({ name: "", email: "", password: "", success: true });
   };
   render() {
     let signInForm;
@@ -69,6 +75,15 @@ class Signin extends Component {
             placeholder="jane@dow.com"
             onChange={(e) => this.handleEmail(e.target.value)}
             value={this.state.email}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mt-2">
+          <Form.Label>Select a Unique NickName: </Form.Label>
+          <Form.Control
+            onChange={(e) => this.handleNickName(e.target.value)}
+            type="text"
+            value={this.state.nickName}
             required
           />
         </Form.Group>
