@@ -7,10 +7,10 @@ import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
 class Signin extends Component {
   state = {
-    name: "",
-    email: "",
-    password: "",
-    nickName: "",
+    name: "Abhijeet Padwal",
+    email: "a@a.com",
+    password: "a",
+    nickName: "a",
     warning: false,
     success: false,
   };
@@ -55,11 +55,11 @@ class Signin extends Component {
           <Alert variant="success">Sign up Success</Alert>
         ) : null}
 
-        <Form.Label className="font-weight-bold mx-auto mt-3">
+        <Form.Label className="font-weight-light m-3">
           INTRODUCE YOURSELF
         </Form.Label>
 
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>Hi there! My name is</Form.Label>
           <Form.Control
             onChange={(e) => this.handleName(e.target.value)}
@@ -68,7 +68,7 @@ class Signin extends Component {
             required
           />
         </Form.Group>
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>Here's my email address:</Form.Label>
           <Form.Control
             type="email"
@@ -78,7 +78,7 @@ class Signin extends Component {
             required
           />
         </Form.Group>
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>Select a Unique NickName: </Form.Label>
           <Form.Control
             onChange={(e) => this.handleNickName(e.target.value)}
@@ -87,7 +87,7 @@ class Signin extends Component {
             required
           />
         </Form.Group>
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>And here's my Password:</Form.Label>
           <Form.Control
             type="password"
@@ -96,7 +96,7 @@ class Signin extends Component {
             required
           />
         </Form.Group>
-        <Button variant="outline-primary" type="submit" className="mt-2">
+        <Button variant="outline-primary" type="submit" className="m-2">
           Sign me up!
         </Button>
       </Form>

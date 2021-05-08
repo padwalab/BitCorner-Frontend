@@ -1,15 +1,30 @@
 import * as actions from "../actions/action-types";
 
-export default function rootReducer(state = {}, action) {
+const initialState = {
+  // currentUser: {
+  //   name: "Abhijeet Padwal",
+  //   email: "a@a.com",
+  //   password: "a",
+  //   nickName: "duh",
+  // },
+  // isLoggedIn: true,
+};
+
+export default function rootReducer(state = initialState, action) {
   switch (action.type) {
     case actions.SIGN_IN:
       return {
         ...state,
-        users: [...state.users, action.payload.content],
         currentUser: {},
         isLoggedIn: false,
       };
     case actions.LOG_IN:
+      return {
+        ...state,
+        currentUser: action.payload.content,
+        isLoggedIn: true,
+      };
+    case actions.UPDATE_PROFILE:
       return {
         ...state,
         currentUser: action.payload.content,

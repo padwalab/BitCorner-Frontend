@@ -8,8 +8,8 @@ import { logInUser } from "../redux/actions/action-helper";
 
 class Login extends Component {
   state = {
-    email: "",
-    password: "",
+    email: "a@a.com",
+    password: "a",
     warning: false,
   };
 
@@ -44,11 +44,11 @@ class Login extends Component {
           <Alert variant="danger">Invalid User creadentials</Alert>
         ) : null}
 
-        <Form.Label className="font-weight-bold mt-3">
+        <Form.Label className="font-weight-light m-3">
           WELCOME TO BITCORNER
         </Form.Label>
 
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>Email address:</Form.Label>
           <Form.Control
             type="email"
@@ -59,7 +59,7 @@ class Login extends Component {
           />
         </Form.Group>
 
-        <Form.Group className="mt-2">
+        <Form.Group className="m-2">
           <Form.Label>Password:</Form.Label>
           <Form.Control
             onChange={(e) => this.handlePassword(e.target.value)}
@@ -69,7 +69,7 @@ class Login extends Component {
           />
         </Form.Group>
         <Form.Group>
-          <Button className="mt-2" variant="outline-primary" type="submit">
+          <Button className="m-2" variant="outline-primary" type="submit">
             Log in
           </Button>
         </Form.Group>
@@ -78,7 +78,7 @@ class Login extends Component {
     return (
       <Container className="container w-25">
         {this.warning}
-        {this.props.isLoggedIn ? <Redirect to="/home/dashboard" /> : logInForm}
+        {this.props.isLoggedIn ? <Redirect to="/dashboard" /> : logInForm}
       </Container>
     );
   }

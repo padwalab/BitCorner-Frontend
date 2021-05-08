@@ -14,6 +14,13 @@ export const logInUser = (content) => ({
   },
 });
 
+export const updateProfile = (content) => ({
+  type: actions.UPDATE_PROFILE,
+  payload: {
+    content,
+  },
+});
+
 export const logOutUser = (content) => ({
   type: actions.LOG_OUT,
   payload: {},

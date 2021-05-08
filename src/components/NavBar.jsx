@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { logOutUser } from "../redux/actions/action-helper";
-import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Button,
   Navbar,
@@ -8,6 +7,7 @@ import {
   Nav,
   NavDropdown,
   Container,
+  LinkContainer,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -37,35 +37,51 @@ class NavBar extends Component {
       );
     } else {
       NavElems = (
-        <NavDropdown
-          title={
-            <span className="text-dark">{this.props.currentUser.name}</span>
-          }
-          className="text-white m-2"
-        >
-          <NavDropdown.Item>
-            <Link to="/profile">Your account</Link>
-          </NavDropdown.Item>
-          <NavDropdown.Item onClick={this.handleLogOut}>
-            <Link to="/home">Log out</Link>
-          </NavDropdown.Item>
-        </NavDropdown>
+        <React.Fragment>
+          <Nav className="mr-auto">
+            <Nav.Link as={Link} to="/bankAccount">
+              Bank Account
+            </Nav.Link>
+          </Nav>
+
+          <Navbar.Collapse className="justify-content-end">
+            <NavDropdown
+              title={this.props.currentUser.name}
+              className="text-white m-2"
+            >
+              <NavDropdown.Item
+                as={Link}
+                to="/profile"
+                className="font-weight-light"
+              >
+                Your account
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                as={Link}
+                to="/login"
+                onClick={this.handleLogOut}
+              >
+                Log out
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Navbar.Collapse>
+        </React.Fragment>
       );
     }
 
     return (
       <Navbar bg="light" variant="light">
         <Container fluid className="w-75">
-          <Navbar.Brand className="font-weight-light">
-            <Link className="text-dark" to="/home/dashboard">
-              BitCorner
-            </Link>
+          <Navbar.Brand
+            as={Link}
+            to="/dashboard"
+            className="font-weight-lighter display-5"
+          >
+            Bit Corner
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse className="justify-content-end">
-            <Nav className="mr-auto"></Nav>
-            {NavElems}
-          </Navbar.Collapse>
+
+          {NavElems}
         </Container>
       </Navbar>
     );
