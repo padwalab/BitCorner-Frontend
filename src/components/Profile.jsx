@@ -72,14 +72,17 @@ class Profile extends Component {
           <Alert variant="success">Sign up Success</Alert>
         ) : null}
 
-        <Form.Label className="m-2">
-          <h1 className="font-weight-light display-5">YOUR ACCOUNT</h1>
-        </Form.Label>
         <Row>
-          <Col xs={5}>
+          <Form.Label className="m-2">
+            <h1 className="font-weight-light display-5">YOUR PROFILE</h1>
+          </Form.Label>
+        </Row>
+        <Row>
+          <Col>
             <Form.Group className="m-2">
-              <Form.Label className="font-weight-light">Name:</Form.Label>
+              <Form.Label className="font-weight-light m-2">Name:</Form.Label>
               <Form.Control
+                className="m-2"
                 onChange={(e) => this.handleName(e.target.value)}
                 type="text"
                 value={this.state.name}
@@ -87,56 +90,76 @@ class Profile extends Component {
               />
             </Form.Group>
             <Form.Group className="m-2">
-              <Form.Label>EMAIL:</Form.Label>
-              <Form.Control type="email" value={this.state.email} readOnly />
-            </Form.Group>
-            <Form.Group className="m-2">
-              <Form.Label>Unique NickName: </Form.Label>
-              <Form.Control type="text" value={this.state.nickName} readOnly />
-            </Form.Group>
-            <Form.Group className="m-2">
-              <Form.Label>Password:</Form.Label>
+              <Form.Label className="m-2">EMAIL:</Form.Label>
               <Form.Control
+                className="m-2"
+                type="email"
+                value={this.state.email}
+                readOnly
+              />
+            </Form.Group>
+            <Form.Group className="m-2">
+              <Form.Label className="m-2">Unique NickName: </Form.Label>
+              <Form.Control
+                className="m-2"
+                type="text"
+                value={this.state.nickName}
+                readOnly
+              />
+            </Form.Group>
+            <Form.Group className="m-2">
+              <Form.Label className="m-2">Password:</Form.Label>
+              <Form.Control
+                className="m-2"
                 type="password"
                 value={this.state.password}
                 readOnly
               />
             </Form.Group>
           </Col>
-          <Col xs={5}>
+          <Col>
             <Form.Group className="m-2">
-              <Form.Label>STREET:</Form.Label>
+              <Form.Label className="m-2">STREET:</Form.Label>
               <Form.Control
+                className="m-2"
                 onChange={(e) => this.handleStreet(e.target.value)}
                 type="text"
                 value={address.street}
               />
             </Form.Group>
             <Form.Group className="m-2">
-              <Form.Label>CITY:</Form.Label>
+              <Form.Label className="m-2">CITY:</Form.Label>
               <Form.Control
+                className="m-2"
                 onChange={(e) => this.handleCity(e.target.value)}
                 type="text"
                 value={address.city}
               />
             </Form.Group>
             <Form.Group className="m-2">
-              <Form.Label>STATE:</Form.Label>
+              <Form.Label className="m-2">STATE:</Form.Label>
               <Form.Control
+                className="m-2"
                 onChange={(e) => this.handleState(e.target.value)}
                 type="text"
                 value={address.state}
               />
             </Form.Group>
             <Form.Group className="m-2">
-              <Form.Label>ZIP:</Form.Label>
+              <Form.Label className="m-2">ZIP:</Form.Label>
               <Form.Control
+                className="m-2"
                 onChange={(e) => this.handleZip(e.target.value)}
                 type="number"
                 value={address.zip}
               />
             </Form.Group>
-            <Button variant="outline-primary" type="submit" className="m-2 ">
+            <Button
+              className="m-2"
+              variant="outline-primary"
+              type="submit"
+              className="m-2 "
+            >
               UPDATE
             </Button>
           </Col>

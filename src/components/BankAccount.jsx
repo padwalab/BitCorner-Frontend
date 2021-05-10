@@ -8,22 +8,38 @@ import {
   Button,
   Row,
   Col,
-  Alert
+  Alert,
 } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { updateProfile } from "../redux/actions/action-helper";
+import Currency from "./Currency";
 
 class BankAccount extends Component {
   state = {
-    bankName: this.props.currentUser.bankAccount ? this.props.currentUser.bankAccount.bankName : "First Republic Bank" ,
-    country: this.props.currentUser.bankAccount ? this.props.currentUser.bankAccount.country : "US" ,
-    accountNumber: this.props.currentUser.bankAccount ? this.props.currentUser.bankAccount.accountNumber : 1234567890 ,
-    currency: this.props.currentUser.bankAccount ? this.props.currentUser.bankAccount.currency : "USD" ,
-    balance: this.props.currentUser.bankAccount ? this.props.currentUser.bankAccount.balance : 100.0 ,
+    bankName:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.bankName
+        : "First Republic Bank",
+    country:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.country
+        : "US",
+    accountNumber:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.accountNumber
+        : 1234567890,
+    currency:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.currency
+        : "USD",
+    currencies:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.currencies
+        : null,
     success: false,
-    warning: false
+    warning: false,
   };
 
   handleCreateBankAccount = (e) => {
@@ -33,13 +49,10 @@ class BankAccount extends Component {
     delete cloneState.warning;
     console.log(this.state);
     axios
-      .put(
-        `http://localhost:8080/api/users/${this.props.currentUser.id}/addBankAccount`,
-        {
-          //done
-          ...cloneState,
-        }
-      )
+      .post(`http://localhost:8080/api/accounts/${this.props.currentUser.id}`, {
+        //done
+        ...cloneState,
+      })
       .then((res) => {
         console.log("repsonse data: ", res.data);
         this.setState({ success: true, warning: false });
@@ -63,15 +76,24 @@ class BankAccount extends Component {
   handleCurrency = (currency) => {
     this.setState({ currency });
   };
-  handleBalance = (balance) => {
-    this.setState({ balance });
-  };
+
   render() {
-    let currencyTypes = ["USD", "INR", "GBP"];
+    let currencyTypes = ["USD", "INR", "GBP", "EUR"];
     const { bankAccount } = this.props.currentUser;
+
+    let currencyDetails = this.state.currencies ? (
+      <React.Fragment>
+        {[...this.state.currencies]
+          .sort((a, b) => a.id - b.id)
+          .map((item) => (
+            <Currency key={item.id} item={item} />
+          ))}
+      </React.Fragment>
+    ) : null;
+
     let BankAccount = (
       <Form onSubmit={(e) => this.handleCreateBankAccount(e)}>
-      {this.state.warning ? (
+        {this.state.warning ? (
           <Alert variant="danger">Add Account Failed</Alert>
         ) : null}
         {this.state.success ? (
@@ -79,7 +101,9 @@ class BankAccount extends Component {
         ) : null}
 
         <Row>
-          <Form.Label className="m-2 display-5">Add A Bank Account:</Form.Label>
+          <Form.Label className="m-2 display-5">
+            {bankAccount ? "BANK ACCOUNT DETAILS" : "ADD A BANK ACCOUNT"}
+          </Form.Label>
         </Row>
         <Row>
           <Col>
@@ -90,7 +114,6 @@ class BankAccount extends Component {
                 onChange={(e) => this.handleBankName(e.target.value)}
                 type="text"
                 value={this.state.bankName}
-                
                 readOnly={bankAccount ? true : false}
               />
             </Form.Group>
@@ -101,12 +124,13 @@ class BankAccount extends Component {
                 onChange={(e) => this.handleAccountNumber(e.target.value)}
                 type="number"
                 value={this.state.accountNumber}
-                
                 readOnly={bankAccount ? true : false}
               />
             </Form.Group>
+          </Col>
+          <Col>
             <Form.Group className="m-2">
-              <Form.Label className="m-2">Currency:</Form.Label>
+              <Form.Label className="m-2">Default Currency:</Form.Label>
               <Typeahead
                 className="m-2"
                 id="basic-typeahead-single"
@@ -116,19 +140,6 @@ class BankAccount extends Component {
                 options={currencyTypes}
                 // selected={this.state.currency}
                 placeholder="Choose Currency type..."
-                readOnly={bankAccount ? true : false}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="m-2">
-              <Form.Label className="m-2">Balance Amount:</Form.Label>
-              <Form.Control
-                className="m-2"
-                onChange={(e) => this.handleBalance(e.target.value)}
-                type="number"
-                value={this.state.balance}
-                
                 readOnly={bankAccount ? true : false}
               />
             </Form.Group>
@@ -159,7 +170,20 @@ class BankAccount extends Component {
     );
     return (
       <Container className="w-75">
-        {this.props.isLoggedIn ? BankAccount : <Redirect to="/login" />}
+        {this.props.isLoggedIn ? (
+          <React.Fragment>
+            <Row>
+              {this.props.currentUser ? (
+                BankAccount
+              ) : (
+                <Redirect to="/dashboard" />
+              )}
+            </Row>
+            <Row>{currencyDetails}</Row>
+          </React.Fragment>
+        ) : (
+          <Redirect to="/login" />
+        )}
       </Container>
     );
   }
