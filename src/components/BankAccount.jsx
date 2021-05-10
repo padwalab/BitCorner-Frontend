@@ -86,7 +86,11 @@ class BankAccount extends Component {
         {[...this.state.currencies]
           .sort((a, b) => a.id - b.id)
           .map((item) => (
-            <Currency key={item.id} item={item} />
+            <Currency
+              key={item.id}
+              default={bankAccount.currency === item.currency ? true : false}
+              item={item}
+            />
           ))}
       </React.Fragment>
     ) : null;
@@ -173,7 +177,7 @@ class BankAccount extends Component {
         {this.props.isLoggedIn ? (
           <React.Fragment>
             <Row>
-              {this.props.currentUser ? (
+              {this.props.isLoggedIn ? (
                 BankAccount
               ) : (
                 <Redirect to="/dashboard" />

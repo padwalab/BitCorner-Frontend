@@ -9,6 +9,7 @@ import {
   Modal,
   Form,
   Alert,
+  Badge,
 } from "react-bootstrap";
 import { connect } from "react-redux";
 import { updateProfile } from "../redux/actions/action-helper";
@@ -76,8 +77,15 @@ class Currency extends Component {
         {this.state.warning ? <Alert variant="danger">Failed</Alert> : null}
         {this.state.success ? <Alert variant="success">Success</Alert> : null}
 
-        <Card className="m-2">
-          <Card.Header as="h5">{currency}</Card.Header>
+        <Card className="m-2" bg="light" text="dark">
+          <Card.Header as="h5" title={currency}>
+            {currency}{" "}
+            {this.props.default ? (
+              <Badge pill variant="secondary" bg="light" className="text-dark">
+                primary
+              </Badge>
+            ) : null}
+          </Card.Header>
           <Card.Body>
             <Card.Title>Units Available: {amount}</Card.Title>
             <Row>
