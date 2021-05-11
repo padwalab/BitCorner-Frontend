@@ -105,6 +105,7 @@ class Login extends Component {
             onSuccess={this.responseGoogle}
             onFailure={this.failureResponseGoogle}
             cookiePolicy={"single_host_origin"}
+            className="m-2"
             // disabled={!this.state.unique ? true : false}
           />
         </Row>

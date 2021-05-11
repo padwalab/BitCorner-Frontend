@@ -48,6 +48,11 @@ class NavBar extends Component {
               Buy BTC
             </Nav.Link>
           </Nav>
+          <Nav className="mr-auto">
+            <Nav.Link as={Link} to="/sell">
+              Sell BTC
+            </Nav.Link>
+          </Nav>
 
           <Navbar.Collapse className="justify-content-end">
             <NavDropdown

@@ -3,6 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { updateProfile } from "../redux/actions/action-helper";
+import Bitcoin from "./Bitcoin";
 
 class DashBoard extends Component {
   state = {};

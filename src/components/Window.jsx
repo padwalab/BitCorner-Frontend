@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route } from "react-router";
 import BankAccount from "./BankAccount";
+import BitCoin from "./Bitcoin";
 import BuyBitCoin from "./BuyBitcoin";
 import DashBoard from "./DashBoard";
 import Login from "./Login";
 import NavBar from "./NavBar";
 import Profile from "./Profile";
+import SellBitCoin from "./SellBitCoin";
 import SignIn from "./SignIn";
 
 class Window extends Component {
@@ -20,6 +22,7 @@ class Window extends Component {
         <Route path="/profile" component={Profile} />
         <Route path="/bankAccount" component={BankAccount} />
         <Route path="/buy" component={BuyBitCoin} />
+        <Route path="/sell" component={SellBitCoin} />
       </React.Fragment>
     );
   }

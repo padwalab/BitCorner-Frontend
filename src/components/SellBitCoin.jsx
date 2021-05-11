@@ -1,59 +1,51 @@
 import axios from "axios";
 import React, { Component } from "react";
 import {
+  Alert,
   Button,
   Card,
   Col,
   Container,
   Form,
   Row,
-  Alert,
 } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { connect } from "react-redux";
 import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
-
-class BuyBitCoin extends Component {
+class SellBitCoin extends Component {
   state = {
-    currencies:
-      this.props.currentUser && this.props.currentUser.bankAccount
-        ? this.props.currentUser.bankAccount.currencies
-        : null,
-    buyAmount: 0,
-    buyCurrency:
+    SellAmount: 0,
+    sellCurrency:
       this.props.currentUser && this.props.currentUser.bankAccount
         ? this.props.currentUser.bankAccount.currency
         : "USD",
     insufficient: false,
+    currencies:
+      this.props.currentUser && this.props.currentUser.bankAccount
+        ? this.props.currentUser.bankAccount.currencies
+        : null,
     success: false,
     warning: false,
   };
 
   checkFunds = () => {
-    axios
-      .get(
-        `http://localhost:8080/api/btc/${this.state.buyCurrency}/${this.state.buyAmount}`
-      )
-      .then((res) => {
-        this.state.currencies.forEach((item) => {
-          if (item.currency === this.state.buyCurrency) {
-            item.amount < res.data
-              ? this.setState({ insufficient: true })
-              : this.setState({ insufficient: false });
-          }
-        });
-      });
+    this.state.currencies.forEach((item) => {
+      if (item.currency === "BTC") {
+        item.amount < this.state.SellAmount
+          ? this.setState({ insufficient: true })
+          : this.setState({ insufficient: false });
+      }
+    });
   };
-
-  handleBuyOrder = () => {
+  handleSellOrder = () => {
     axios
       .post(
-        `http://localhost:8080/api/orders/buy/${this.props.currentUser.id}`,
+        `http://localhost:8080/api/orders/sell/${this.props.currentUser.id}`,
         {
-          units: this.state.buyAmount,
+          units: this.state.SellAmount,
           variant: "MARKET",
-          currency: this.state.buyCurrency,
+          currency: this.state.sellCurrency,
         }
       )
       .then((res) => {
@@ -63,12 +55,12 @@ class BuyBitCoin extends Component {
       .catch((error) => this.setState({ success: false, warning: true }));
   };
 
-  handleBuyAmount = async (buyAmount) => {
-    await this.setState({ buyAmount });
+  handleSellAmount = async (SellAmount) => {
+    await this.setState({ SellAmount });
     await this.checkFunds();
   };
   render() {
-    let buyBitcoinHeader = <h1 className="display-5 m-2">BUY BITCOIN</h1>;
+    let SELLBitcoinHeader = <h1 className="display-5 m-2">SELL BITCOIN</h1>;
     let currencyTypes = ["USD", "INR", "GBP", "EUR"];
     return (
       <Container className="w-75">
@@ -82,16 +74,14 @@ class BuyBitCoin extends Component {
           <Card className="m-2" bg="light" text="dark">
             <Card.Header as="h5">
               <Row xs={3}>
-                <Col className="m-2">{buyBitcoinHeader}</Col>
+                <Col className="m-2">{SELLBitcoinHeader}</Col>
                 <Col>
                   <Typeahead
                     className="m-4"
                     id="basic-typeahead-single"
                     labelKey="name"
                     single
-                    onChange={(e) => {
-                      this.setState({ buyCurrency: e[0] });
-                    }}
+                    onChange={(e) => this.setState({ sellCurrency: e[0] })}
                     options={currencyTypes}
                     placeholder="Choose Buy Currency type..."
                   />
@@ -101,7 +91,7 @@ class BuyBitCoin extends Component {
             <Card.Body>
               <Card.Title>
                 <Col>
-                  <Bitcoin currency={this.state.buyCurrency} />
+                  <Bitcoin currency={this.state.sellCurrency} />
                 </Col>
               </Card.Title>
               <Row>
@@ -110,10 +100,10 @@ class BuyBitCoin extends Component {
                     <Form.Control
                       className="m-2"
                       onChange={(e) => {
-                        this.handleBuyAmount(e.target.value);
+                        this.handleSellAmount(e.target.value);
                       }}
                       type="number"
-                      value={this.state.buyAmount}
+                      value={this.state.SellAmount}
                     />
                   </Form.Group>
                 </Col>
@@ -122,9 +112,9 @@ class BuyBitCoin extends Component {
                     <Button
                       variant="outline-primary"
                       disabled={this.state.insufficient}
-                      onClick={(e) => this.handleBuyOrder()}
+                      onClick={(e) => this.handleSellOrder()}
                     >
-                      Buy
+                      Sell
                     </Button>
                   </Form.Group>
                 </Col>
@@ -138,4 +128,4 @@ class BuyBitCoin extends Component {
 }
 
 const mapStateToProps = (state) => state;
-export default connect(mapStateToProps, { updateProfile })(BuyBitCoin);
+export default connect(mapStateToProps, { updateProfile })(SellBitCoin);
