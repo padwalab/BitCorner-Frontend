@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Alert, Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form, Row } from "react-bootstrap";
+import GoogleLogin from "react-google-login";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
@@ -21,9 +22,20 @@ class Login extends Component {
     this.setState({ password });
   };
 
-  handleLogin = (e) => {
+  responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+    const { email, googleId } = response.profileObj;
+    this.setState({
+      email,
+      password: googleId,
+    });
+    this.handleLogin();
+  };
+
+  handleLogin = () => {
     const { warning, ...loginData } = this.state;
-    e.preventDefault();
+
     axios
       .post(V1APIS.LOG_IN_API, loginData) //done
       .then((res) => {
@@ -39,7 +51,12 @@ class Login extends Component {
   render() {
     let logInForm;
     logInForm = (
-      <Form onSubmit={(e) => this.handleLogin(e)}>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          this.handleLogin();
+        }}
+      >
         {this.state.warning ? (
           <Alert variant="danger">Invalid User creadentials</Alert>
         ) : null}
@@ -77,8 +94,20 @@ class Login extends Component {
     );
     return (
       <Container className="container w-25">
-        {this.warning}
-        {this.props.isLoggedIn ? <Redirect to="/dashboard" /> : logInForm}
+        <Row>
+          {this.warning}
+          {this.props.isLoggedIn ? <Redirect to="/dashboard" /> : logInForm}
+        </Row>
+        <Row>
+          <GoogleLogin
+            clientId="997333689935-7qa58drcpi254ke1eips2vqft4k5ss8a.apps.googleusercontent.com"
+            buttonText="LogIn"
+            onSuccess={this.responseGoogle}
+            onFailure={this.failureResponseGoogle}
+            cookiePolicy={"single_host_origin"}
+            // disabled={!this.state.unique ? true : false}
+          />
+        </Row>
       </Container>
     );
   }

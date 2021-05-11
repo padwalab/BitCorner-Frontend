@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Form, Button, Container, Alert, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import { signInUser } from "../redux/actions/action-helper";
 import axios from "axios";
 import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
+import GoogleLogin from "react-google-login";
 class Signin extends Component {
   state = {
     name: "Abhijeet Padwal",
@@ -13,13 +14,22 @@ class Signin extends Component {
     nickName: "a",
     warning: false,
     success: false,
+    unique: true,
   };
   handleName = (name) => {
     this.setState({ name });
   };
 
   handleNickName = (nickName) => {
-    this.setState({ nickName });
+    axios
+      .get(`http://localhost:8080/api/users/unique/${nickName}`)
+      .then((res) =>
+        res.status === 200
+          ? this.setState({ nickName, unique: true })
+          : this.setState({ unique: false })
+      )
+      .catch((error) => this.setState({ nickName, unique: false }));
+    // this.setState({ nickName });
   };
 
   handleEmail = (email) => {
@@ -29,9 +39,25 @@ class Signin extends Component {
     this.setState({ password });
   };
 
-  handleSignInUser = (e) => {
+  responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+    const { email, name, googleId } = response.profileObj;
+    this.setState({
+      name,
+      email,
+      password: googleId,
+      nickName: this.state.nickName,
+    });
+    this.handleSignInUser();
+  };
+  failureResponseGoogle = (response) => {
+    console.log(response);
+  };
+
+  handleSignInUser = () => {
     const { success, warning, ...payload } = this.state;
-    e.preventDefault();
+    // e.preventDefault();
     axios
       .post(V1APIS.SIGN_IN_API, payload) //done
       .then((res) => {
@@ -47,7 +73,12 @@ class Signin extends Component {
   render() {
     let signInForm;
     signInForm = (
-      <Form onSubmit={this.handleSignInUser}>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          this.handleSignInUser();
+        }}
+      >
         {this.state.warning ? (
           <Alert variant="danger">Sign in failed</Alert>
         ) : null}
@@ -86,6 +117,9 @@ class Signin extends Component {
             value={this.state.nickName}
             required
           />
+          <Form.Text style={{ color: "red" }} hidden={this.state.unique} muted>
+            Not unique
+          </Form.Text>
         </Form.Group>
         <Form.Group className="m-2">
           <Form.Label>And here's my Password:</Form.Label>
@@ -101,7 +135,21 @@ class Signin extends Component {
         </Button>
       </Form>
     );
-    return <Container className="container w-25">{signInForm}</Container>;
+    return (
+      <Container className="container w-25">
+        <Row>{signInForm}</Row>
+        <Row>
+          <GoogleLogin
+            clientId="997333689935-7qa58drcpi254ke1eips2vqft4k5ss8a.apps.googleusercontent.com"
+            buttonText="SingIn"
+            onSuccess={this.responseGoogle}
+            onFailure={this.failureResponseGoogle}
+            cookiePolicy={"single_host_origin"}
+            disabled={!this.state.unique ? true : false}
+          />
+        </Row>
+      </Container>
+    );
   }
 }
 export default connect(null, { signInUser })(Signin);
