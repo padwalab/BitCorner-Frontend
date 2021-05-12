@@ -5,12 +5,14 @@ import { signInUser } from "../redux/actions/action-helper";
 import axios from "axios";
 import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
-import GoogleLogin from "react-google-login";
+import fire from "../fire";
+import GoogleLogin from "react-google-login"
+
 class Signin extends Component {
   state = {
     name: "Abhijeet Padwal",
-    email: "a@a.com",
-    password: "a",
+    email: "huangkai.hsu@gmail.com",
+    password: "aaa123123123",
     nickName: "a",
     warning: false,
     success: false,
@@ -148,6 +150,19 @@ class Signin extends Component {
             disabled={!this.state.unique ? true : false}
           />
         </Row>
+        <Row>
+
+          <button onClick={()=>{
+            fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
+              console.log("sssssss")
+            }).then(()=>{
+              fire.auth().currentUser.sendEmailVerification()
+            }).catch((e)=>{
+              console.log("ffffff")
+            })
+          }}>login in with Google</button>
+        </Row>
+        
       </Container>
     );
   }

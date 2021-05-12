@@ -6,10 +6,11 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
 import { logInUser } from "../redux/actions/action-helper";
+import fire from "../fire"
 
 class Login extends Component {
   state = {
-    email: "a@a.com",
+    email: "a.a@gmail.com",
     password: "a",
     warning: false,
   };
@@ -109,6 +110,8 @@ class Login extends Component {
             // disabled={!this.state.unique ? true : false}
           />
         </Row>
+        
+        
       </Container>
     );
   }
