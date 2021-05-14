@@ -6,13 +6,17 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import * as V1APIS from "../apis/v1";
 import { logInUser } from "../redux/actions/action-helper";
-import fire from "../fire"
+
+import firebase from "firebase"
+import fire from "../fire";
+const provider = new firebase.auth.GoogleAuthProvider();
 
 class Login extends Component {
   state = {
-    email: "a.a@gmail.com",
-    password: "a",
+    email: "huangkai.hsu@gmail.com",
+    password: "aaa123123123",
     warning: false,
+    emailVerify: false,
   };
 
   handleEmail = (email) => {
@@ -36,7 +40,6 @@ class Login extends Component {
 
   handleLogin = () => {
     const { warning, ...loginData } = this.state;
-
     axios
       .post(V1APIS.LOG_IN_API, loginData) //done
       .then((res) => {
@@ -49,6 +52,57 @@ class Login extends Component {
     console.log(this.state);
     // this.setState({ email: "", password: "", warning: false });
   };
+
+  handleLoginUser = () => {
+
+    const { warning,...loginData } = this.state;
+
+
+    fire.auth().signInWithEmailAndPassword(loginData.email, loginData.password).then((result)=>{
+            
+
+    }).then(()=>{
+        const ev = fire.auth().currentUser.emailVerified;
+
+        this.setState({
+            emailVerify: ev,
+        })
+
+        if(!this.state.emailVerify) {
+            this.setState({warning:true})
+        }
+        else{
+            this.handleLogin();
+        }
+        
+    }).catch((e)=>{console.log(e)})
+
+  }
+
+  handleLoginGoogle = () => {
+    fire.auth().signInWithPopup(provider).then(()=>{
+      const ev = fire.auth().currentUser.emailVerified;
+
+      const {uid, email} = fire.auth().currentUser.providerData[0];
+        this.setState({
+          password:uid,
+          email:email,
+        })
+        this.setState({
+          emailVerify: ev,
+      })
+
+      if(fire.auth().currentUser.emailVerified) {
+        this.handleLogin();
+
+      }else{
+          this.setState({warning:true})
+      }
+    }).catch((e)=>{console.log(e)})
+  }
+
+
+
   render() {
     let logInForm;
     logInForm = (
@@ -87,9 +141,9 @@ class Login extends Component {
           />
         </Form.Group>
         <Form.Group>
-          <Button className="m-2" variant="outline-primary" type="submit">
+          {/* <Button className="m-2" variant="outline-primary" type="submit">
             Log in
-          </Button>
+          </Button> */}
         </Form.Group>
       </Form>
     );
@@ -100,17 +154,70 @@ class Login extends Component {
           {this.props.isLoggedIn ? <Redirect to="/dashboard" /> : logInForm}
         </Row>
         <Row>
-          <GoogleLogin
-            clientId="997333689935-7qa58drcpi254ke1eips2vqft4k5ss8a.apps.googleusercontent.com"
-            buttonText="LogIn"
-            onSuccess={this.responseGoogle}
-            onFailure={this.failureResponseGoogle}
-            cookiePolicy={"single_host_origin"}
-            className="m-2"
-            // disabled={!this.state.unique ? true : false}
-          />
+          <Button className="m-2" variant="outline-primary" onClick={this.handleLoginUser}>Login</Button>
+        </Row>
+        <Row>
+          <Button className="m-2" variant="outline-primary" onClick={this.handleLoginGoogle}>Login with Google</Button>
         </Row>
         
+        {/* <Row>
+          <button onClick={() => {
+            const { warning, ...loginData } = this.state;
+
+            fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then(
+              this.state({emailVerified:fire.auth().currentUser.emailVerified})
+              
+            ).catch(e=>{console.log("check verification mail")})
+
+            axios
+              .post(V1APIS.LOG_IN_API, loginData) //done
+              .then((res) => {
+                console.log("repsonse data: ", res.data);
+                
+
+                if (res.status === 200 && this.state.emailVerified) {
+                  this.props.logInUser(res.data);
+                }
+                
+              })
+              .catch((error) => this.setState({ warning: true }));
+            console.log(this.state);
+            // this.setState({ email: "", password: "", warning: false });
+          }}>Log in</button>
+        </Row> */}
+        {/* <Row>
+          <button onClick={()=>{
+            fire.auth().signInWithPopup(provider).then(()=>{
+              
+
+
+              if(fire.auth().currentUser.emailVerified) {
+
+                const { email, uid, ...loginData } = fire.auth().currentUser.providerData[0]
+                // console.log("loginData"+JSON.stringify(loginData))
+                this.setState({
+                  email: email,
+                  password: uid,
+                })
+                axios
+                  .post(V1APIS.LOG_IN_API, loginData) //done
+                  .then((res) => {
+                    console.log("repsonse data: ", res.data);
+                    if (res.status === 200) {
+                      this.props.logInUser(res.data);
+                    }
+                  })
+                  .catch((error) => this.setState({ warning: true }));
+                console.log(this.state);
+
+              }else{
+                this.setState({ warning: true })
+              }
+            }).catch((e)=>{console.log(e)})
+
+
+          }}>Log in with Google</button>
+        </Row> */}
         
       </Container>
     );

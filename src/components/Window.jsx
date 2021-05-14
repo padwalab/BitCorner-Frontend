@@ -5,18 +5,26 @@ import BankAccount from "./BankAccount";
 import BitCoin from "./Bitcoin";
 import BuyBitCoin from "./BuyBitcoin";
 import DashBoard from "./DashBoard";
-import Login from "./Login";
 import NavBar from "./NavBar";
 import Profile from "./Profile";
 import SellBitCoin from "./SellBitCoin";
+
+import Login from "./Login";
+import Login2 from "./Login2";
+
+
 import SignIn from "./SignIn";
+import SignIn2 from "./SignIn2";
+
 
 class Window extends Component {
   state = {};
   render() {
     return (
       <React.Fragment>
+        <Route path="/signin2" component={SignIn2} />
         <Route path="/signin" component={SignIn} />
+        <Route path="/login2" component={Login2} />
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={DashBoard} />
         <Route path="/profile" component={Profile} />

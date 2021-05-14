@@ -1,5 +1,4 @@
 import firebase from "firebase";
-import { findRenderedDOMComponentWithClass } from "react-dom/test-utils";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDrjNe1cuim6KW8B9kYpVNkNox0iNWz748",
