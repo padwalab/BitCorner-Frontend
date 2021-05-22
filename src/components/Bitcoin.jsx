@@ -7,11 +7,6 @@ import { Redirect } from "react-router";
 class BitCoin extends Component {
   state = {
     btcRate: 1000,
-    defaultCurrency: this.props.currency
-      ? this.props.currency
-      : this.props.currentUser && this.props.currentUser.bankAccount
-      ? this.props.currentUser.bankAccount.currency
-      : "USD",
   };
   componentDidMount = () => {
     this.getBTCPrice();
@@ -26,14 +21,14 @@ class BitCoin extends Component {
 
   getBTCPrice = () => {
     axios
-      .get(`http://localhost:8080/api/btc/${this.state.defaultCurrency}`)
+      .get(`http://localhost:8080/api/btc/${this.props.getCurrency()}`)
       .then((res) => this.setState({ btcRate: res.data }));
   };
   render() {
     let Bitcoin = (
       <React.Fragment>
         <Row className="display-3 m-2">
-          {this.state.defaultCurrency} {this.state.btcRate} / BTC
+          {this.props.getCurrency()} {this.state.btcRate} / BTC
         </Row>
       </React.Fragment>
     );

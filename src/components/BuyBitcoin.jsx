@@ -13,6 +13,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { connect } from "react-redux";
 import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
+import MyOrders from "./MyOrders";
 
 class BuyBitCoin extends Component {
   state = {
@@ -46,6 +47,22 @@ class BuyBitCoin extends Component {
       });
   };
 
+  getOrders = (type) => {
+    console.log("fetching orders");
+    let res = [];
+    let orders =
+      this.props.currentUser &&
+      this.props.currentUser.bankAccount &&
+      this.props.currentUser.bankAccount.orders
+        ? this.props.currentUser.bankAccount.orders.forEach((item) => {
+            if (item.type === type) {
+              res.push(item);
+            }
+          })
+        : [];
+    return res;
+  };
+
   handleBuyOrder = () => {
     axios
       .post(
@@ -61,6 +78,10 @@ class BuyBitCoin extends Component {
         this.setState({ success: true, warning: false });
       })
       .catch((error) => this.setState({ success: false, warning: true }));
+  };
+
+  getBuyCurrency = () => {
+    return this.state.buyCurrency;
   };
 
   handleBuyAmount = async (buyAmount) => {
@@ -90,6 +111,7 @@ class BuyBitCoin extends Component {
                     labelKey="name"
                     single
                     onChange={(e) => {
+                      console.log(e[0]);
                       this.setState({ buyCurrency: e[0] });
                     }}
                     options={currencyTypes}
@@ -101,7 +123,7 @@ class BuyBitCoin extends Component {
             <Card.Body>
               <Card.Title>
                 <Col>
-                  <Bitcoin currency={this.state.buyCurrency} />
+                  <Bitcoin getCurrency={this.getBuyCurrency} />
                 </Col>
               </Card.Title>
               <Row>
@@ -131,6 +153,12 @@ class BuyBitCoin extends Component {
               </Row>
             </Card.Body>
           </Card>
+        </Row>
+        <Row>
+          <Col>here will the the current buy orders</Col>
+          <Col>
+            <MyOrders orders={this.getOrders} />
+          </Col>
         </Row>
       </Container>
     );
