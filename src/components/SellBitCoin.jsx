@@ -13,6 +13,7 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { connect } from "react-redux";
 import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
+import SellOrders from "./SellOrders";
 class SellBitCoin extends Component {
   state = {
     SellAmount: 0,
@@ -38,6 +39,22 @@ class SellBitCoin extends Component {
       }
     });
   };
+
+  getOrders = (type) => {
+    console.log("fetching orders");
+    let res = [];
+    let orders =
+      this.props.currentUser &&
+      this.props.currentUser.bankAccount &&
+      this.props.currentUser.bankAccount.orders
+        ? this.props.currentUser.bankAccount.orders.forEach((item) => {
+            if (item.type === type) {
+              res.push(item);
+            }
+          })
+        : [];
+    return res;
+  };
   handleSellOrder = () => {
     axios
       .post(
@@ -53,6 +70,10 @@ class SellBitCoin extends Component {
         this.setState({ success: true, warning: false });
       })
       .catch((error) => this.setState({ success: false, warning: true }));
+  };
+
+  getSellCurrency = () => {
+    return this.state.sellCurrency;
   };
 
   handleSellAmount = async (SellAmount) => {
@@ -91,7 +112,7 @@ class SellBitCoin extends Component {
             <Card.Body>
               <Card.Title>
                 <Col>
-                  <Bitcoin currency={this.state.sellCurrency} />
+                  <Bitcoin getCurrency={this.getSellCurrency} />
                 </Col>
               </Card.Title>
               <Row>
@@ -121,6 +142,12 @@ class SellBitCoin extends Component {
               </Row>
             </Card.Body>
           </Card>
+        </Row>
+        <Row>
+          <Col>here will the the current sell orders</Col>
+          <Col>
+            <SellOrders orders={this.getOrders} />
+          </Col>
         </Row>
       </Container>
     );
