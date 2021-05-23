@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
 import MyOrders from "./MyOrders";
+import AllBuyOrders from "./AllBuyOrders";
 
 class BuyBitCoin extends Component {
   state = {
@@ -153,7 +154,9 @@ class BuyBitCoin extends Component {
                 </Col>
               </Row>
               <Row className="m-2">
-                <Col className="m-2">here will the the current buy orders</Col>
+                <Col className="m-2">
+                  <AllBuyOrders />
+                </Col>
                 <Col className="m-2">
                   <MyOrders className="m-2" orders={this.getOrders} />
                 </Col>
