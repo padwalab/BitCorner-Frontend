@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Row,
-  Alert,
-} from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 
 class MyOrders extends Component {
   state = {
@@ -23,16 +15,20 @@ class MyOrders extends Component {
             <Row>{myBuyOrders}</Row>
           </Card.Header>
           <Card.Body>
-            {this.state.orders.map((item) => (
-              <Row key={item.id}>
-                {item.currency} {item.type} {item.units}
-              </Row>
-            ))}
+            {this.state.orders
+              .sort((a, b) => a.id > b.id)
+              .map((item) => (
+                <Row key={item.id}>
+                  <Col>{item.currency}</Col> <Col>{item.type}</Col>
+                  <Col>{item.units}</Col>
+                  <Col>{item.status}</Col>
+                </Row>
+              ))}
           </Card.Body>
         </Card>
       </Container>
     ) : null;
-    return <Container className="border">{myorder}</Container>;
+    return <Container fluid>{myorder}</Container>;
   }
 }
 

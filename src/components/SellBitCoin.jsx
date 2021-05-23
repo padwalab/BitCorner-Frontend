@@ -110,13 +110,13 @@ class SellBitCoin extends Component {
               </Row>
             </Card.Header>
             <Card.Body>
-              <Card.Title>
-                <Col>
-                  <Bitcoin getCurrency={this.getSellCurrency} />
+              <Card.Title className="m-2">
+                <Col className="m-2">
+                  <Bitcoin className="m-2" getCurrency={this.getSellCurrency} />
                 </Col>
               </Card.Title>
-              <Row>
-                <Col xs={3}>
+              <Row className="border-bottom m-3">
+                <Col xs={3} className="m-2">
                   <Form.Group className="m-2">
                     <Form.Control
                       className="m-2"
@@ -128,9 +128,10 @@ class SellBitCoin extends Component {
                     />
                   </Form.Group>
                 </Col>
-                <Col xs={3}>
+                <Col xs={3} className="m-2">
                   <Form.Group className="m-2">
                     <Button
+                      className="m-2"
                       variant="outline-primary"
                       disabled={this.state.insufficient}
                       onClick={(e) => this.handleSellOrder()}
@@ -140,14 +141,14 @@ class SellBitCoin extends Component {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row className="m-2">
+                <Col className="m-2">here will the the current sell orders</Col>
+                <Col className="m-2">
+                  <SellOrders className="m-2" orders={this.getOrders} />
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
-        </Row>
-        <Row>
-          <Col>here will the the current sell orders</Col>
-          <Col>
-            <SellOrders orders={this.getOrders} />
-          </Col>
         </Row>
       </Container>
     );

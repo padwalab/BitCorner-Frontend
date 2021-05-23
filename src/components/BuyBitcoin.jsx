@@ -93,7 +93,7 @@ class BuyBitCoin extends Component {
     let currencyTypes = ["USD", "INR", "GBP", "EUR"];
     return (
       <Container className="w-75">
-        <Row>
+        <Row className="m-2">
           {this.state.warning ? (
             <Alert variant="danger">Buy Order Failed</Alert>
           ) : null}
@@ -101,10 +101,10 @@ class BuyBitCoin extends Component {
             <Alert variant="success">Buy Order placed</Alert>
           ) : null}
           <Card className="m-2" bg="light" text="dark">
-            <Card.Header as="h5">
-              <Row xs={3}>
+            <Card.Header as="h5" className="m-2">
+              <Row xs={3} className="m-2">
                 <Col className="m-2">{buyBitcoinHeader}</Col>
-                <Col>
+                <Col className="m-2">
                   <Typeahead
                     className="m-4"
                     id="basic-typeahead-single"
@@ -120,14 +120,14 @@ class BuyBitCoin extends Component {
                 </Col>
               </Row>
             </Card.Header>
-            <Card.Body>
-              <Card.Title>
-                <Col>
-                  <Bitcoin getCurrency={this.getBuyCurrency} />
+            <Card.Body className="m-2">
+              <Card.Title className="m-2">
+                <Col className="m-2">
+                  <Bitcoin className="m-2" getCurrency={this.getBuyCurrency} />
                 </Col>
               </Card.Title>
-              <Row>
-                <Col xs={3}>
+              <Row className="border-bottom m-3">
+                <Col xs={3} className="m-2">
                   <Form.Group className="m-2">
                     <Form.Control
                       className="m-2"
@@ -139,9 +139,10 @@ class BuyBitCoin extends Component {
                     />
                   </Form.Group>
                 </Col>
-                <Col xs={3}>
+                <Col xs={3} className="m-2">
                   <Form.Group className="m-2">
                     <Button
+                      className="m-2"
                       variant="outline-primary"
                       disabled={this.state.insufficient}
                       onClick={(e) => this.handleBuyOrder()}
@@ -151,14 +152,14 @@ class BuyBitCoin extends Component {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row className="m-2">
+                <Col className="m-2">here will the the current buy orders</Col>
+                <Col className="m-2">
+                  <MyOrders className="m-2" orders={this.getOrders} />
+                </Col>
+              </Row>
             </Card.Body>
           </Card>
-        </Row>
-        <Row>
-          <Col>here will the the current buy orders</Col>
-          <Col>
-            <MyOrders orders={this.getOrders} />
-          </Col>
         </Row>
       </Container>
     );

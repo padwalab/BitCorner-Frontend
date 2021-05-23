@@ -25,14 +25,17 @@ class SellOrders extends Component {
           <Card.Body>
             {this.state.orders.map((item) => (
               <Row key={item.id}>
-                {item.currency} {item.type} {item.units} {item.status}
+                <Col>{item.currency}</Col>
+                <Col>{item.type}</Col>
+                <Col>{item.units}</Col>
+                <Col>{item.status}</Col>
               </Row>
             ))}
           </Card.Body>
         </Card>
       </Container>
     ) : null;
-    return <Container className="border">{myorder}</Container>;
+    return <Container fluid>{myorder}</Container>;
   }
 }
 
