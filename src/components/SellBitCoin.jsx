@@ -15,6 +15,7 @@ import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
 import SellOrders from "./SellOrders";
 import AllSellOrders from "./AllSellOrders";
+import AllBuyOrders from "./AllBuyOrders";
 class SellBitCoin extends Component {
   state = {
     SellAmount: 0,
@@ -23,6 +24,7 @@ class SellBitCoin extends Component {
         ? this.props.currentUser.bankAccount.currency
         : "USD",
     insufficient: false,
+    availableFunds: 0,
     currencies:
       this.props.currentUser && this.props.currentUser.bankAccount
         ? this.props.currentUser.bankAccount.currencies
@@ -35,8 +37,8 @@ class SellBitCoin extends Component {
     this.state.currencies.forEach((item) => {
       if (item.currency === "BTC") {
         item.amount < this.state.SellAmount
-          ? this.setState({ insufficient: true })
-          : this.setState({ insufficient: false });
+          ? this.setState({ insufficient: true, availableFunds: item.amount })
+          : this.setState({ insufficient: false, availableFunds: item.amount });
       }
     });
   };
@@ -81,6 +83,7 @@ class SellBitCoin extends Component {
     await this.setState({ SellAmount });
     await this.checkFunds();
   };
+
   render() {
     let SELLBitcoinHeader = <h1 className="display-5 m-2">SELL BITCOIN</h1>;
     let currencyTypes = ["USD", "INR", "GBP", "EUR"];
@@ -94,23 +97,33 @@ class SellBitCoin extends Component {
             <Alert variant="success">Buy Order placed</Alert>
           ) : null}
           <Card className="m-2" bg="light" text="dark">
-            <Card.Header as="h5">
-              <Row xs={3}>
-                <Col className="m-2">{SELLBitcoinHeader}</Col>
+            <Card.Header as="h5" className="m-2">
+              <Row className="m-2">
+                <Col className="m-2">
+                  <Row>{SELLBitcoinHeader}</Row>
+                  <Row className="mx-2">
+                    Units Available: {this.state.availableFunds}
+                  </Row>
+                </Col>
                 <Col>
-                  <Typeahead
-                    className="m-4"
-                    id="basic-typeahead-single"
-                    labelKey="name"
-                    single
-                    onChange={(e) => this.setState({ sellCurrency: e[0] })}
-                    options={currencyTypes}
-                    placeholder="Choose Buy Currency type..."
-                  />
+                  <Row>
+                    <Typeahead
+                      className="m-2"
+                      id="basic-typeahead-single"
+                      labelKey="name"
+                      single
+                      onChange={(e) => this.setState({ sellCurrency: e[0] })}
+                      options={currencyTypes}
+                      placeholder="Choose Buy Currency type..."
+                    />
+                  </Row>
+                  <Row className="m-2">
+                    Transacting using: {this.state.sellCurrency}
+                  </Row>
                 </Col>
               </Row>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className="m-2">
               <Card.Title className="m-2">
                 <Col className="m-2">
                   <Bitcoin className="m-2" getCurrency={this.getSellCurrency} />
@@ -127,10 +140,27 @@ class SellBitCoin extends Component {
                       type="number"
                       value={this.state.SellAmount}
                     />
+                    <Form.Text
+                      style={{ color: "red" }}
+                      className="m-2"
+                      hidden={!this.state.insufficient}
+                      muted
+                    >
+                      INSUFFICIENT BTC!!
+                    </Form.Text>
+                  </Form.Group>
+                </Col>
+                <Col xs={2} className="m-2">
+                  <Form.Group>
+                    <Form.Check
+                      className="m-2"
+                      type="checkbox"
+                      label="LMT ORDER"
+                    />
                   </Form.Group>
                 </Col>
                 <Col xs={3} className="m-2">
-                  <Form.Group className="m-2">
+                  <Form.Group>
                     <Button
                       className="m-2"
                       variant="outline-primary"
@@ -144,7 +174,7 @@ class SellBitCoin extends Component {
               </Row>
               <Row className="m-2">
                 <Col className="m-2">
-                  <AllSellOrders />
+                  <AllBuyOrders />
                 </Col>
                 <Col className="m-2">
                   <SellOrders className="m-2" orders={this.getOrders} />

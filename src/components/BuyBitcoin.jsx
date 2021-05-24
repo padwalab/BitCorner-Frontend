@@ -15,6 +15,8 @@ import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
 import MyOrders from "./MyOrders";
 import AllBuyOrders from "./AllBuyOrders";
+import SellOrders from "./SellOrders";
+import AllSellOrders from "./AllSellOrders";
 
 class BuyBitCoin extends Component {
   state = {
@@ -23,11 +25,13 @@ class BuyBitCoin extends Component {
         ? this.props.currentUser.bankAccount.currencies
         : null,
     buyAmount: 0,
+    boolLimit: false,
     buyCurrency:
       this.props.currentUser && this.props.currentUser.bankAccount
         ? this.props.currentUser.bankAccount.currency
         : "USD",
     insufficient: false,
+    availableFunds: 0,
     success: false,
     warning: false,
   };
@@ -41,8 +45,14 @@ class BuyBitCoin extends Component {
         this.state.currencies.forEach((item) => {
           if (item.currency === this.state.buyCurrency) {
             item.amount < res.data
-              ? this.setState({ insufficient: true })
-              : this.setState({ insufficient: false });
+              ? this.setState({
+                  insufficient: true,
+                  availableFunds: item.amount,
+                })
+              : this.setState({
+                  insufficient: false,
+                  availableFunds: item.amount,
+                });
           }
         });
       });
@@ -89,12 +99,16 @@ class BuyBitCoin extends Component {
     await this.setState({ buyAmount });
     await this.checkFunds();
   };
+
+  handleLimitOrder = () => {
+    console.log("this will be limit order");
+  };
   render() {
     let buyBitcoinHeader = <h1 className="display-5 m-2">BUY BITCOIN</h1>;
     let currencyTypes = ["USD", "INR", "GBP", "EUR"];
     return (
       <Container className="w-75">
-        <Row className="m-2">
+        <Row>
           {this.state.warning ? (
             <Alert variant="danger">Buy Order Failed</Alert>
           ) : null}
@@ -103,21 +117,28 @@ class BuyBitCoin extends Component {
           ) : null}
           <Card className="m-2" bg="light" text="dark">
             <Card.Header as="h5" className="m-2">
-              <Row xs={3} className="m-2">
+              <Row className="m-2">
                 <Col className="m-2">{buyBitcoinHeader}</Col>
-                <Col className="m-2">
-                  <Typeahead
-                    className="m-4"
-                    id="basic-typeahead-single"
-                    labelKey="name"
-                    single
-                    onChange={(e) => {
-                      console.log(e[0]);
-                      this.setState({ buyCurrency: e[0] });
-                    }}
-                    options={currencyTypes}
-                    placeholder="Choose Buy Currency type..."
-                  />
+                <Col>
+                  <Row>
+                    <Typeahead
+                      className="m-2"
+                      id="basic-typeahead-single"
+                      labelKey="name"
+                      single
+                      onChange={(e) => {
+                        console.log(e[0]);
+                        this.setState({ buyCurrency: e[0] });
+                        this.checkFunds();
+                      }}
+                      options={currencyTypes}
+                      placeholder="Choose Buy Currency type..."
+                    />
+                  </Row>
+                  <Row className="m-2">
+                    Transacting using: {this.state.buyCurrency} (
+                    {this.state.availableFunds})
+                  </Row>
                 </Col>
               </Row>
             </Card.Header>
@@ -138,10 +159,28 @@ class BuyBitCoin extends Component {
                       type="number"
                       value={this.state.buyAmount}
                     />
+                    <Form.Text
+                      style={{ color: "red" }}
+                      className="m-2"
+                      hidden={!this.state.insufficient}
+                      muted
+                    >
+                      INSUFFICIENT FUNDS!!
+                    </Form.Text>
+                  </Form.Group>
+                </Col>
+                <Col xs={2} className="m-2">
+                  <Form.Group>
+                    <Form.Check
+                      className="m-2"
+                      type="checkbox"
+                      onChange={(e) => this.handleLimitOrder()}
+                      label="LMT ORDER"
+                    />
                   </Form.Group>
                 </Col>
                 <Col xs={3} className="m-2">
-                  <Form.Group className="m-2">
+                  <Form.Group>
                     <Button
                       className="m-2"
                       variant="outline-primary"
@@ -155,7 +194,7 @@ class BuyBitCoin extends Component {
               </Row>
               <Row className="m-2">
                 <Col className="m-2">
-                  <AllBuyOrders />
+                  <AllSellOrders />
                 </Col>
                 <Col className="m-2">
                   <MyOrders className="m-2" orders={this.getOrders} />

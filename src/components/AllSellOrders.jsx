@@ -19,7 +19,7 @@ class AllSellOrders extends Component {
       .then((res) => this.setState({ orders: res.data }));
   };
   render() {
-    let sellPrices = <h3 className="display-6">BID PRICES</h3>;
+    let sellPrices = <h3 className="display-6">CURRENT ASKS</h3>;
     console.log("sellPricesOrders", this.state.orders);
     let bids = this.state.orders ? (
       <Container>
