@@ -26,7 +26,7 @@ class AllSellOrders extends Component {
     let sellPrices = <h3 className="display-6">CURRENT ASKS</h3>;
     console.log("sellPricesOrders", this.state.orders);
     let bids = this.state.orders ? (
-      <Container>
+      <React.Fragment>
         <Card bg="light" text="dark">
           <Card.Header as="h5">
             <Row>{sellPrices}</Row>
@@ -39,14 +39,16 @@ class AllSellOrders extends Component {
                     <Col>{item.type}</Col>
                     <Col>{item.units}</Col>
                     <Col>{item.status}</Col>
+                    <Col>{item.variant}</Col>
+                    <Col>{item.limitamt}</Col>
                   </Row>
                 ))
               : null}
           </Card.Body>
         </Card>
-      </Container>
+      </React.Fragment>
     ) : null;
-    return <Container fluid>{bids}</Container>;
+    return <React.Fragment fluid>{bids}</React.Fragment>;
   }
 }
 
