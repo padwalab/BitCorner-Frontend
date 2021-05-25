@@ -26,6 +26,7 @@ class BuyBitCoin extends Component {
         : null,
     buyAmount: 0,
     boolLimit: false,
+    limitAmt: null,
     buyCurrency:
       this.props.currentUser && this.props.currentUser.bankAccount
         ? this.props.currentUser.bankAccount.currency
@@ -80,7 +81,8 @@ class BuyBitCoin extends Component {
         `http://localhost:8080/api/orders/buy/${this.props.currentUser.id}`,
         {
           units: this.state.buyAmount,
-          variant: "MARKET",
+          variant: this.state.boolLimit ? "LIMIT" : "MARKET",
+          limitamt: this.state.limitAmt ? this.state.limitAmt : null,
           currency: this.state.buyCurrency,
         }
       )
@@ -100,8 +102,13 @@ class BuyBitCoin extends Component {
     await this.checkFunds();
   };
 
+  handleLimitAmount = (limitAmt) => {
+    this.setState({ limitAmt });
+  };
+
   handleLimitOrder = () => {
     console.log("this will be limit order");
+    this.setState({ boolLimit: !this.state.boolLimit });
   };
   render() {
     let buyBitcoinHeader = <h1 className="display-5 m-2">BUY BITCOIN</h1>;
@@ -169,6 +176,9 @@ class BuyBitCoin extends Component {
                     </Form.Text>
                   </Form.Group>
                 </Col>
+                {/* <Col>
+                  
+                </Col> */}
                 <Col xs={2} className="m-2">
                   <Form.Group>
                     <Form.Check
@@ -176,6 +186,13 @@ class BuyBitCoin extends Component {
                       type="checkbox"
                       onChange={(e) => this.handleLimitOrder()}
                       label="LMT ORDER"
+                    />
+                    <Form.Control
+                      className="m-2"
+                      onChange={(e) => this.handleLimitAmount(e.target.value)}
+                      type="number"
+                      value={this.state.limitAmt}
+                      hidden={!this.state.boolLimit}
                     />
                   </Form.Group>
                 </Col>

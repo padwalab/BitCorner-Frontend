@@ -24,6 +24,8 @@ class SellBitCoin extends Component {
         ? this.props.currentUser.bankAccount.currency
         : "USD",
     insufficient: false,
+    limitAmt: null,
+    boolLimit: false,
     availableFunds: 0,
     currencies:
       this.props.currentUser && this.props.currentUser.bankAccount
@@ -64,7 +66,8 @@ class SellBitCoin extends Component {
         `http://localhost:8080/api/orders/sell/${this.props.currentUser.id}`,
         {
           units: this.state.SellAmount,
-          variant: "MARKET",
+          variant: this.state.boolLimit ? "LIMIT" : "MARKET",
+          limitamt: this.state.limitAmt ? this.state.limitAmt : null,
           currency: this.state.sellCurrency,
         }
       )
@@ -82,6 +85,13 @@ class SellBitCoin extends Component {
   handleSellAmount = async (SellAmount) => {
     await this.setState({ SellAmount });
     await this.checkFunds();
+  };
+  handleLimitAmount = (limitAmt) => {
+    this.setState({ limitAmt });
+  };
+  handleLimitOrder = () => {
+    console.log("this will be limit order");
+    this.setState({ boolLimit: !this.state.boolLimit });
   };
 
   render() {
@@ -156,6 +166,16 @@ class SellBitCoin extends Component {
                       className="m-2"
                       type="checkbox"
                       label="LMT ORDER"
+                      onClick={(e) => this.handleLimitOrder()}
+                    />
+                    <Form.Control
+                      className="m-2"
+                      onChange={(e) => {
+                        this.handleLimitAmount(e.target.value);
+                      }}
+                      type="number"
+                      value={this.state.limitAmt}
+                      hidden={!this.state.boolLimit}
                     />
                   </Form.Group>
                 </Col>

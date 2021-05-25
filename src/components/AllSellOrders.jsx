@@ -13,6 +13,10 @@ class AllSellOrders extends Component {
     }, 10000);
   };
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   getAllAsks = () => {
     axios
       .get(`http://localhost:8080/api/orders/asks/open`)

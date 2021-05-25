@@ -13,6 +13,10 @@ class AllBuyOrders extends Component {
     }, 10000);
   };
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   getAllBids = () => {
     axios
       .get(`http://localhost:8080/api/orders/bids/open`)
