@@ -6,11 +6,15 @@ import Bills from "./Bills";
 import BitCoin from "./Bitcoin";
 import BuyBitCoin from "./BuyBitcoin";
 import DashBoard from "./DashBoard";
-import Login from "./Login";
 import NavBar from "./NavBar";
 import Profile from "./Profile";
 import SellBitCoin from "./SellBitCoin";
+
+import Login from "./Login";
+
+
 import SignIn from "./SignIn";
+
 
 class Window extends Component {
   state = {};

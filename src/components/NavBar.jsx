@@ -30,7 +30,7 @@ class NavBar extends Component {
           or
           <Link to="/signin">
             <Button className="m-2" variant="outline-primary">
-              Sign in
+              Sign up
             </Button>
           </Link>
         </Form>
