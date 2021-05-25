@@ -174,20 +174,12 @@ class BankAccount extends Component {
     );
     return (
       <Container className="w-75">
-        {this.props.isLoggedIn ? (
-          <React.Fragment>
-            <Row>
-              {this.props.isLoggedIn ? (
-                BankAccount
-              ) : (
-                <Redirect to="/dashboard" />
-              )}
-            </Row>
-            <Row>{currencyDetails}</Row>
-          </React.Fragment>
-        ) : (
-          <Redirect to="/login" />
-        )}
+        <React.Fragment>
+          <Row>
+            {this.props.isLoggedIn ? BankAccount : <Redirect to="/dashboard" />}
+          </Row>
+          <Row>{currencyDetails}</Row>
+        </React.Fragment>
       </Container>
     );
   }
