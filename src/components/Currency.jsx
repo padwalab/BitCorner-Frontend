@@ -35,7 +35,7 @@ class Currency extends Component {
     formData.append("currency", currency);
     axios
       .put(
-        `http://localhost:8080/api/accounts/deposit/${this.props.currentUser.id}`,
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/accounts/deposit/${this.props.currentUser.id}`,
         formData
       )
       .then((res) => {
@@ -55,7 +55,7 @@ class Currency extends Component {
     formData.append("currency", currency);
     axios
       .put(
-        `http://localhost:8080/api/accounts/withdraw/${this.props.currentUser.id}`,
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/accounts/withdraw/${this.props.currentUser.id}`,
         formData
       )
       .then((res) => {

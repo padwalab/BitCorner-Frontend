@@ -9,7 +9,9 @@ class BillsSent extends Component {
   };
   componentDidMount = () => {
     axios
-      .get(`http://localhost:8080/api/bills/sent/${this.props.currentUser.id}`)
+      .get(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/sent/${this.props.currentUser.id}`
+      )
       .then((res) => this.setState({ sent: res.data }));
   };
   deleteBill = (id) => {
@@ -21,7 +23,9 @@ class BillsSent extends Component {
   };
   handleCancelBill = (id) => {
     axios
-      .put(`http://localhost:8080/api/bills/cancel/${id}`)
+      .put(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/cancel/${id}`
+      )
       .then((res) => (res.status === 200 ? this.deleteBill(id) : null));
   };
   render() {

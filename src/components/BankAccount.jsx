@@ -49,10 +49,13 @@ class BankAccount extends Component {
     delete cloneState.warning;
     console.log(this.state);
     axios
-      .post(`http://localhost:8080/api/accounts/${this.props.currentUser.id}`, {
-        //done
-        ...cloneState,
-      })
+      .post(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/accounts/${this.props.currentUser.id}`,
+        {
+          //done
+          ...cloneState,
+        }
+      )
       .then((res) => {
         console.log("repsonse data: ", res.data);
         this.setState({ success: true, warning: false });

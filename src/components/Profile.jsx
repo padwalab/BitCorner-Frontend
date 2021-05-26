@@ -47,10 +47,13 @@ class Profile extends Component {
     delete cloneState.email;
     console.log(this.state);
     axios
-      .put(`http://localhost:8080/api/users/${this.props.currentUser.id}`, {
-        //done
-        ...cloneState,
-      })
+      .put(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/users/${this.props.currentUser.id}`,
+        {
+          //done
+          ...cloneState,
+        }
+      )
       .then((res) => {
         console.log("repsonse data: ", res.data);
         this.setState({ success: true, warning: false });

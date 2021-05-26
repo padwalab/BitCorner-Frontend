@@ -21,7 +21,9 @@ class BitCoin extends Component {
 
   getBTCPrice = () => {
     axios
-      .get(`http://localhost:8080/api/btc/${this.props.getCurrency()}`)
+      .get(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/btc/${this.props.getCurrency()}`
+      )
       .then((res) => this.setState({ btcRate: res.data }));
   };
   render() {

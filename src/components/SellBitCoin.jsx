@@ -63,7 +63,7 @@ class SellBitCoin extends Component {
   handleSellOrder = () => {
     axios
       .post(
-        `http://localhost:8080/api/orders/sell/${this.props.currentUser.id}`,
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/sell/${this.props.currentUser.id}`,
         {
           units: this.state.SellAmount,
           variant: this.state.boolLimit ? "LIMIT" : "MARKET",

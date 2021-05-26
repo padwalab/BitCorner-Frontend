@@ -11,7 +11,7 @@ class BillsRecieved extends Component {
   componentDidMount = () => {
     axios
       .get(
-        `http://localhost:8080/api/bills/recieved/${this.props.currentUser.id}`
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/recieved/${this.props.currentUser.id}`
       )
       .then((res) => this.setState({ recieved: res.data }));
   };
@@ -24,12 +24,14 @@ class BillsRecieved extends Component {
   };
   handleRejectBill = (id) => {
     axios
-      .put(`http://localhost:8080/api/bills/reject/${id}`)
+      .put(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/reject/${id}`
+      )
       .then((res) => (res.status === 200 ? this.deleteBill(id) : null));
   };
   handlePayBill = () => {
     axios.post(
-      `http://localhost:8080/api/bills/pay/${this.state.id}/${this.state.buyCurrency}`
+      `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/pay/${this.state.id}/${this.state.buyCurrency}`
     );
   };
   render() {

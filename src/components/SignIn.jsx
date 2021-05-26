@@ -22,7 +22,9 @@ class Signin extends Component {
 
   handleNickName = (nickName) => {
     axios
-      .get(`http://localhost:8080/api/users/unique/${nickName}`)
+      .get(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/users/unique/${nickName}`
+      )
       .then((res) =>
         res.status === 200
           ? this.setState({ nickName, unique: true })
