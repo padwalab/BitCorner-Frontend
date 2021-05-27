@@ -28,7 +28,7 @@ class SellOrders extends Component {
   getSellOrders = () => {
     axios
       .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/all/sell/${this.props.userId}}`
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/all/sell/${this.props.userId}`
       )
       .then((res) => this.setState({ orders: res.data }));
   };
