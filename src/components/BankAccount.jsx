@@ -42,6 +42,17 @@ class BankAccount extends Component {
     warning: false,
   };
 
+  componentDidMount = () => {
+    axios
+      .get(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/users/${this.props.currentUser.id}`
+      )
+      .then((res) => {
+        console.log("repsonse data: ", res.data);
+        this.props.updateProfile(res.data);
+      });
+  };
+
   handleCreateBankAccount = (e) => {
     e.preventDefault();
     let cloneState = Object.assign({}, this.state);
