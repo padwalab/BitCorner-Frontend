@@ -30,7 +30,7 @@ class BitCoin extends Component {
     let Bitcoin = (
       <React.Fragment>
         <Row className="display-3 m-2">
-          {this.props.getCurrency()} {this.state.btcRate} / BTC
+          LTP: {this.props.getCurrency()} {this.state.btcRate} / BTC
         </Row>
       </React.Fragment>
     );

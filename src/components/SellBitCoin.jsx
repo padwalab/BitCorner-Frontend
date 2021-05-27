@@ -194,7 +194,7 @@ class SellBitCoin extends Component {
               </Row>
               <Row className="m-2">
                 <Col className="m-2">
-                  <AllBuyOrders />
+                  <AllBuyOrders getCurrency={this.getSellCurrency} />
                 </Col>
                 <Col className="m-2">
                   <SellOrders className="m-2" orders={this.getOrders} />

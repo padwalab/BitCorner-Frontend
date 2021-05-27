@@ -20,7 +20,8 @@ class AllSellOrders extends Component {
   getAllAsks = () => {
     axios
       .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/asks/open`
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/asks/open`,
+        { params: { currency: this.props.getCurrency() } }
       )
       .then((res) => this.setState({ orders: res.data }));
   };
