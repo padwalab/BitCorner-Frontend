@@ -197,7 +197,11 @@ class SellBitCoin extends Component {
                   <AllBuyOrders getCurrency={this.getSellCurrency} />
                 </Col>
                 <Col className="m-2">
-                  <SellOrders className="m-2" orders={this.getOrders} />
+                  <SellOrders
+                    className="m-2"
+                    userId={this.props.currentUser.id}
+                    orders={this.getOrders}
+                  />
                 </Col>
               </Row>
             </Card.Body>

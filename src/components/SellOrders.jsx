@@ -13,6 +13,24 @@ class SellOrders extends Component {
   state = {
     orders: this.props.orders("SELL"),
   };
+  componentDidMount = () => {
+    this.getSellOrders();
+    this.interval = setInterval(() => {
+      this.getSellOrders();
+    }, 10000);
+  };
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  getSellOrders = () => {
+    axios
+      .get(
+        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/all/sell/${this.props.userId}}`
+      )
+      .then((res) => this.setState({ orders: res.data }));
+  };
   render() {
     let myBuyOrders = <h3 className="display-6">MY SELL ORDERS</h3>;
     console.log("SellOrders", this.state.orders);
