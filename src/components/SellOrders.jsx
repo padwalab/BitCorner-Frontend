@@ -9,6 +9,7 @@ import {
   Row,
   Alert,
 } from "react-bootstrap";
+import * as V1APIS from "../apis/v1";
 
 class SellOrders extends Component {
   state = {
@@ -27,9 +28,7 @@ class SellOrders extends Component {
 
   getSellOrders = () => {
     axios
-      .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/all/sell/${this.props.userId}`
-      )
+      .get(`http://${V1APIS.SERVER}/api/orders/all/sell/${this.props.userId}`)
       .then((res) => this.setState({ orders: res.data }));
   };
   render() {

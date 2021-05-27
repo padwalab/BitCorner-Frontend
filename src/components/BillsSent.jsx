@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import { Button, Row, Table } from "react-bootstrap";
 import { connect } from "react-redux";
-
+import * as V1APIS from "../apis/v1";
 class BillsSent extends Component {
   state = {
     sent: [],
@@ -10,7 +10,7 @@ class BillsSent extends Component {
   componentDidMount = () => {
     axios
       .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/sent/${this.props.currentUser.id}`
+        `http://${V1APIS.SERVER}/api/bills/sent/${this.props.currentUser.id}`
       )
       .then((res) => this.setState({ sent: res.data }));
   };
@@ -23,9 +23,7 @@ class BillsSent extends Component {
   };
   handleCancelBill = (id) => {
     axios
-      .put(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/cancel/${id}`
-      )
+      .put(`http://${V1APIS.SERVER}/api/bills/cancel/${id}`)
       .then((res) => (res.status === 200 ? this.deleteBill(id) : null));
   };
   render() {

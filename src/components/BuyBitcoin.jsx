@@ -17,7 +17,7 @@ import MyOrders from "./MyOrders";
 import AllBuyOrders from "./AllBuyOrders";
 import SellOrders from "./SellOrders";
 import AllSellOrders from "./AllSellOrders";
-
+import * as V1APIS from "../apis/v1";
 class BuyBitCoin extends Component {
   state = {
     currencies:
@@ -40,7 +40,7 @@ class BuyBitCoin extends Component {
   checkFunds = () => {
     axios
       .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/btc/${this.state.buyCurrency}/${this.state.buyAmount}`
+        `http://${V1APIS.SERVER}/api/btc/${this.state.buyCurrency}/${this.state.buyAmount}`
       )
       .then((res) => {
         this.state.currencies.forEach((item) => {
@@ -78,7 +78,7 @@ class BuyBitCoin extends Component {
   handleBuyOrder = () => {
     axios
       .post(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/buy/${this.props.currentUser.id}`,
+        `http://${V1APIS.SERVER}/api/orders/buy/${this.props.currentUser.id}`,
         {
           units: this.state.buyAmount,
           variant: this.state.boolLimit ? "LIMIT" : "MARKET",

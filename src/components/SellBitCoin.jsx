@@ -15,6 +15,7 @@ import Bitcoin from "./Bitcoin";
 import { updateProfile } from "../redux/actions/action-helper";
 import SellOrders from "./SellOrders";
 import AllSellOrders from "./AllSellOrders";
+import * as V1APIS from "../apis/v1";
 import AllBuyOrders from "./AllBuyOrders";
 class SellBitCoin extends Component {
   state = {
@@ -63,7 +64,7 @@ class SellBitCoin extends Component {
   handleSellOrder = () => {
     axios
       .post(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/sell/${this.props.currentUser.id}`,
+        `http://${V1APIS.SERVER}/api/orders/sell/${this.props.currentUser.id}`,
         {
           units: this.state.SellAmount,
           variant: this.state.boolLimit ? "LIMIT" : "MARKET",

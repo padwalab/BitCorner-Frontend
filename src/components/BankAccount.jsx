@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 import { updateProfile } from "../redux/actions/action-helper";
 import Currency from "./Currency";
-
+import * as V1APIS from "../apis/v1";
 class BankAccount extends Component {
   state = {
     bankName:
@@ -44,9 +44,7 @@ class BankAccount extends Component {
 
   componentDidMount = () => {
     axios
-      .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/users/${this.props.currentUser.id}`
-      )
+      .get(`http://${V1APIS.SERVER}/api/users/${this.props.currentUser.id}`)
       .then((res) => {
         console.log("repsonse data: ", res.data);
         this.props.updateProfile(res.data);
@@ -61,7 +59,7 @@ class BankAccount extends Component {
     console.log(this.state);
     axios
       .post(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/accounts/${this.props.currentUser.id}`,
+        `http://${V1APIS.SERVER}/api/accounts/${this.props.currentUser.id}`,
         {
           //done
           ...cloneState,

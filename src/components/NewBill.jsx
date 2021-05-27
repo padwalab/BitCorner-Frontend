@@ -4,7 +4,7 @@ import { Alert, Button, Col, Form, Row } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { connect } from "react-redux";
 import { updateProfile } from "../redux/actions/action-helper";
-
+import * as V1APIS from "../apis/v1";
 class NewBill extends Component {
   state = {
     warning: false,
@@ -20,12 +20,9 @@ class NewBill extends Component {
     e.preventDefault();
     //   Make the apis call here
     axios
-      .post(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills`,
-        {
-          ...this.state,
-        }
-      )
+      .post(`http://${V1APIS.SERVER}/api/bills`, {
+        ...this.state,
+      })
       .then((res) => {
         console.log("repsonse data: ", res.data);
         this.setState({ success: true, warning: false });

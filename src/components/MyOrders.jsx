@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-
+import * as V1APIS from "../apis/v1";
 class MyOrders extends Component {
   state = {
     orders: this.props.orders("BUY"),
@@ -19,9 +19,7 @@ class MyOrders extends Component {
 
   getBuyOrders = () => {
     axios
-      .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/orders/all/buy/${this.props.userId}`
-      )
+      .get(`http://${V1APIS.SERVER}/api/orders/all/buy/${this.props.userId}`)
       .then((res) => this.setState({ orders: res.data }));
   };
   render() {

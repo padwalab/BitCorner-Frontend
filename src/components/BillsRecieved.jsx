@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Button, Row, Table, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Typeahead } from "react-bootstrap-typeahead";
-
+import * as V1APIS from "../apis/v1";
 class BillsRecieved extends Component {
   state = {
     recieved: [],
@@ -11,7 +11,7 @@ class BillsRecieved extends Component {
   componentDidMount = () => {
     axios
       .get(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/recieved/${this.props.currentUser.id}`
+        `http://${V1APIS.SERVER}/api/bills/recieved/${this.props.currentUser.id}`
       )
       .then((res) => this.setState({ recieved: res.data }));
   };
@@ -24,14 +24,12 @@ class BillsRecieved extends Component {
   };
   handleRejectBill = (id) => {
     axios
-      .put(
-        `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/reject/${id}`
-      )
+      .put(`http://${V1APIS.SERVER}/api/bills/reject/${id}`)
       .then((res) => (res.status === 200 ? this.deleteBill(id) : null));
   };
   handlePayBill = () => {
     axios.post(
-      `http://ec2-18-190-25-33.us-east-2.compute.amazonaws.com:8080/api/bills/pay/${this.state.id}/${this.state.buyCurrency}`
+      `http://${V1APIS.SERVER}/api/bills/pay/${this.state.id}/${this.state.buyCurrency}`
     );
   };
   render() {
