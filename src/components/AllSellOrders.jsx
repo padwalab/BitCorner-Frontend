@@ -37,6 +37,7 @@ class AllSellOrders extends Component {
             {this.state.orders.length > 0
               ? this.state.orders.map((item) => (
                   <Row key={item.id}>
+                    <Col>{item.id}</Col>
                     <Col>{item.currency}</Col>
                     <Col>{item.type}</Col>
                     <Col>{item.units}</Col>

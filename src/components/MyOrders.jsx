@@ -36,6 +36,7 @@ class MyOrders extends Component {
               .sort((a, b) => a.id > b.id)
               .map((item) => (
                 <Row key={item.id}>
+                  <Col>{item.id}</Col>
                   <Col>{item.currency}</Col> <Col>{item.type}</Col>
                   <Col>{item.units}</Col>
                   <Col>{item.status}</Col>

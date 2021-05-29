@@ -43,6 +43,7 @@ class SellOrders extends Component {
           <Card.Body>
             {this.state.orders.map((item) => (
               <Row key={item.id}>
+                <Col>{item.id}</Col>
                 <Col>{item.currency}</Col>
                 <Col>{item.type}</Col>
                 <Col>{item.units}</Col>
